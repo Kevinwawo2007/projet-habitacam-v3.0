@@ -1,7 +1,3 @@
-#ifndef STUCTURE_H_INCLUDED
-#define STUCTURE_H_INCLUDED
-
-
 /* ============================================================
  *  HabitatCam — Plateforme de logement au Cameroun
  *  Fichier     : structures.h
@@ -34,21 +30,24 @@
 #define FICHIER_RESERVATIONS  "data/reservations.txt"
 
 /* ── Rôles utilisateur ─────────────────────────────────────── */
-typedef enum {
+typedef enum
+{
     ROLE_LOCATAIRE      = 1,
     ROLE_BAILLEUR       = 2,
     ROLE_ADMINISTRATEUR = 3
 } Role;
 
 /* ── Statut d'un logement ──────────────────────────────────── */
-typedef enum {
+typedef enum
+{
     STATUT_DISPONIBLE   = 1,
     STATUT_RESERVE      = 2,
     STATUT_INDISPONIBLE = 3
 } StatutLogement;
 
 /* ── Statut d'une réservation ──────────────────────────────── */
-typedef enum {
+typedef enum
+{
     RES_EN_ATTENTE = 1,
     RES_CONFIRMEE  = 2,
     RES_ANNULEE    = 3
@@ -57,7 +56,8 @@ typedef enum {
 /* ══════════════════════════════════════════════════════════════
  *  Structure : Utilisateur
  * ══════════════════════════════════════════════════════════════ */
-typedef struct {
+typedef struct
+{
     int  id;
     char nom[TAILLE_NOM];
     char prenom[TAILLE_NOM];
@@ -71,7 +71,8 @@ typedef struct {
 /* ══════════════════════════════════════════════════════════════
  *  Structure : Logement
  * ══════════════════════════════════════════════════════════════ */
-typedef struct {
+typedef struct
+{
     int   id;
     char  titre[TAILLE_TITRE];
     char  type[TAILLE_TYPE];        /* Studio, Appartement, Villa... */
@@ -88,7 +89,8 @@ typedef struct {
 /* ══════════════════════════════════════════════════════════════
  *  Structure : Reservation
  * ══════════════════════════════════════════════════════════════ */
-typedef struct {
+typedef struct
+{
     int   id;
     int   idLocataire;
     int   idLogement;
@@ -99,10 +101,10 @@ typedef struct {
 /* ══════════════════════════════════════════════════════════════
  *  Structure : Session (utilisateur actuellement connecté)
  * ══════════════════════════════════════════════════════════════ */
-typedef struct {
+typedef struct
+{
     int         connecte;       /* 1 = session active */
     Utilisateur utilisateur;
 } Session;
 
 #endif /* STRUCTURES_H_INCLUDED */
-#endif // STUCTURE_H_INCLUDED

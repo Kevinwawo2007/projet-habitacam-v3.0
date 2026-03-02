@@ -9,7 +9,7 @@
 #ifndef AUTH_H_INCLUDED
 #define AUTH_H_INCLUDED
 
-#include "Structure.h"
+#include "Structures.h"
 
 /* ── Variables globales partagées ──────────────────────────── */
 extern Utilisateur  listeUtilisateurs[MAX_UTILISATEURS];
