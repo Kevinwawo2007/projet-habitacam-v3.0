@@ -43,7 +43,7 @@ int main()
 
     printf("============================================\n");
     printf("   HABITATCAM - Plateforme de logement     \n");
-    printf("        Cameroun  |  Version 1.0           \n");
+    printf("        Cameroun  |  Version 2.0           \n");
     printf("============================================\n");
 
     /* Chargement des donnees au demarrage */

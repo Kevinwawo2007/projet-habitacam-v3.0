@@ -1,6 +1,1 @@
-1|Admin|Super|admin@habitatcam.cm|000000000|admin123|3|1
-2|WAWO|KEVIN|darylkevin237@gmail.com|6885594|Yaounde237|1|1
-3|SIANI|BRUCE|sinabruce237@gmail.com|699958090|Yaounde237|2|1
-4|TOGNANG|DARYL|kevindaryl23@gmail.com|6787854789|Yaounde|2|1
-5|SIANI|BRUCE|sianibruce237@gmail.com|699958090|Yaounde237|2|1
-6|fomek|yohann|yohannfomekong@gmail.com|686195214|fomekle15|1|1
+1|Wawo|Kevin|darylkevin237@gmail.com|688255594|Yaounde237|2|0|1

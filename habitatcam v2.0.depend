@@ -1,0 +1,282 @@
+# depslib dependency file v1.0
+1743445502 source:c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcam v1.0\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1772415619 source:c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\main.c
+	<stdio.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+	"bailleur.h"
+	"administrateur.h"
+
+1773082916 source:c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\auth.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+
+1772291660 c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\structure.h
+
+1772408924 c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\auth.h
+	"Structures.h"
+
+1773082916 source:c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\administrateur.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"administrateur.h"
+
+1772408940 c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\administrateur.h
+	"Structures.h"
+
+1773082916 source:c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\bailleur.c
+	<stdio.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"bailleur.h"
+
+1772415619 c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\structures.h
+
+1772406757 c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\logement.h
+	"structures.h"
+
+1772406942 c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\bailleur.h
+	"structures.h"
+
+1773082916 source:c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\locataire.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+
+1772406031 c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\locataire.h
+	"structures.h"
+
+1772415618 source:c:\users\lenovo\desktop\projet habitacam  v1.0\habitatcamv1.0\logement.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+
+1773082916 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\locataire.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+
+1773617358 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\structures.h
+
+1773617358 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\auth.h
+	"structures.h"
+
+1772406757 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\logement.h
+	"structures.h"
+
+1772406031 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\locataire.h
+	"structures.h"
+
+1773087427 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\logement.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+
+1773617358 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\administrateur.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"administrateur.h"
+
+1773621927 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\administrateur.h
+	"structures.h"
+	"auth.h"
+
+1773617358 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\auth.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+
+1773617358 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\bailleur.c
+	<stdio.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"bailleur.h"
+
+1772406942 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\bailleur.h
+	"structures.h"
+
+1773617358 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv1.0\main.c
+	<stdio.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+	"bailleur.h"
+	"administrateur.h"
+
+1773622914 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\bailleur.c
+	<stdio.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"bailleur.h"
+
+1773617358 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\structures.h
+
+1773622670 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\auth.h
+	"structures.h"
+
+1772406757 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\logement.h
+	"structures.h"
+
+1772406942 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\bailleur.h
+	"structures.h"
+
+1773623066 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\locataire.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+
+1772406031 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\locataire.h
+	"structures.h"
+
+1773087427 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\logement.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+
+1773617358 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\main.c
+	<stdio.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+	"bailleur.h"
+	"administrateur.h"
+
+1773621927 c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\administrateur.h
+	"structures.h"
+	"auth.h"
+
+1773621927 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\administrateur.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"administrateur.h"
+
+1773626447 source:c:\users\lenovo\desktop\projet habitacam  v2.0\habitatcamv2.0\auth.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	<termios.h>
+	<unistd.h>
+	<sys/stat.h>
+	"structures.h"
+	"auth.h"
+
+1774652344 source:e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\administrateur.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"administrateur.h"
+
+1774652344 e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\structures.h
+
+1773622670 e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\auth.h
+	"structures.h"
+
+1774652344 e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\administrateur.h
+	"structures.h"
+	"auth.h"
+
+1774652344 source:e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\auth.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	<termios.h>
+	<unistd.h>
+	<sys/stat.h>
+	"structures.h"
+	"auth.h"
+
+1774652344 source:e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\bailleur.c
+	<stdio.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"bailleur.h"
+
+1772406757 e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\logement.h
+	"structures.h"
+
+1772406942 e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\bailleur.h
+	"structures.h"
+
+1774652344 source:e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\locataire.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+
+1772406031 e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\locataire.h
+	"structures.h"
+
+1774652344 source:e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\logement.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+
+1774652344 source:e:\nouveau dossier\projet habitacam  v2.0\habitatcamv2.0\main.c
+	<stdio.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+	"bailleur.h"
+	"administrateur.h"
+

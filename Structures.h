@@ -1,15 +1,15 @@
 /* ============================================================
- *  HabitatCam — Plateforme de logement au Cameroun
- *  Fichier     : structures.h
- *  Version     : 1.0
- *  Description : Définition de toutes les structures de données
- *                utilisées dans l'application.
+ * @file    structures.h
+ * @brief   Structures, constantes et enumerations de HabitatCam.
+ * @version 2.0
  * ============================================================ */
 
 #ifndef STRUCTURES_H_INCLUDED
 #define STRUCTURES_H_INCLUDED
 
-/* ── Constantes globales ───────────────────────────────────── */
+/* ============================================================
+ * CONSTANTES GLOBALES
+ * ============================================================ */
 #define MAX_UTILISATEURS   100
 #define MAX_LOGEMENTS      200
 #define MAX_RESERVATIONS   300
@@ -24,12 +24,37 @@
 #define TAILLE_DESC        200
 #define TAILLE_TYPE        30
 
-/* ── Fichiers de stockage ──────────────────────────────────── */
+/* ============================================================
+ * FICHIERS DE STOCKAGE
+ * ============================================================ */
 #define FICHIER_UTILISATEURS  "data/utilisateurs.txt"
 #define FICHIER_LOGEMENTS     "data/logements.txt"
 #define FICHIER_RESERVATIONS  "data/reservations.txt"
 
-/* ── Rôles utilisateur ─────────────────────────────────────── */
+/* ============================================================
+ * @brief Codes de retour des fonctions d'authentification.
+ *
+ * Inspire du module du professeur. Permet de savoir exactement
+ * pourquoi une operation a reussi ou echoue au lieu d'un
+ * simple 0 ou -1.
+ *
+ * Exemple d'utilisation :
+ *   AuthStatus st = inscrireUtilisateur();
+ *   if (st == AUTH_ERR_EXISTS)
+ *       printf("Email deja utilise.\n");
+ * ============================================================ */
+typedef enum
+{
+    AUTH_OK           =  0,  /* Operation reussie                 */
+    AUTH_ERR_IO       = -1,  /* Probleme d'ouverture de fichier   */
+    AUTH_ERR_NOTFOUND = -2,  /* Aucun compte avec cet email       */
+    AUTH_ERR_EXISTS   = -3,  /* Email deja utilise                */
+    AUTH_ERR_INVALID  = -4   /* Mauvais mot de passe ou inactif   */
+} AuthStatus;
+
+/* ============================================================
+ * ROLES UTILISATEUR
+ * ============================================================ */
 typedef enum
 {
     ROLE_LOCATAIRE      = 1,
@@ -37,7 +62,9 @@ typedef enum
     ROLE_ADMINISTRATEUR = 3
 } Role;
 
-/* ── Statut d'un logement ──────────────────────────────────── */
+/* ============================================================
+ * STATUT D'UN LOGEMENT
+ * ============================================================ */
 typedef enum
 {
     STATUT_DISPONIBLE   = 1,
@@ -45,7 +72,9 @@ typedef enum
     STATUT_INDISPONIBLE = 3
 } StatutLogement;
 
-/* ── Statut d'une réservation ──────────────────────────────── */
+/* ============================================================
+ * STATUT D'UNE RESERVATION
+ * ============================================================ */
 typedef enum
 {
     RES_EN_ATTENTE = 1,
@@ -53,9 +82,14 @@ typedef enum
     RES_ANNULEE    = 3
 } StatutReservation;
 
-/* ══════════════════════════════════════════════════════════════
- *  Structure : Utilisateur
- * ══════════════════════════════════════════════════════════════ */
+/* ============================================================
+ * @brief Structure Utilisateur.
+ *
+ * Represente un compte inscrit sur la plateforme.
+ * Le champ nbEchecs compte les tentatives de connexion
+ * echouees consecutives. Quand il atteint 3, le compte
+ * est automatiquement desactive (actif = 0).
+ * ============================================================ */
 typedef struct
 {
     int  id;
@@ -65,45 +99,53 @@ typedef struct
     char telephone[TAILLE_TEL];
     char motDePasse[TAILLE_MDP];
     Role role;
-    int  actif;   /* 1 = actif, 0 = désactivé par l'admin */
+    int  nbEchecs;  /* Nb de tentatives echouees consecutives */
+    int  actif;     /* 1 = actif, 0 = desactive par l'admin  */
 } Utilisateur;
 
-/* ══════════════════════════════════════════════════════════════
- *  Structure : Logement
- * ══════════════════════════════════════════════════════════════ */
+/* ============================================================
+ * @brief Structure Logement.
+ *
+ * Represente une annonce publiee par un bailleur.
+ * ============================================================ */
 typedef struct
 {
     int   id;
     char  titre[TAILLE_TITRE];
-    char  type[TAILLE_TYPE];        /* Studio, Appartement, Villa... */
+    char  type[TAILLE_TYPE];
     char  description[TAILLE_DESC];
     char  ville[TAILLE_VILLE];
     char  quartier[TAILLE_QUARTIER];
-    float superficie;               /* en m²   */
+    float superficie;
     int   nbPieces;
-    float prixMensuel;              /* en FCFA */
+    float prixMensuel;
     StatutLogement statut;
     int   idBailleur;
 } Logement;
 
-/* ══════════════════════════════════════════════════════════════
- *  Structure : Reservation
- * ══════════════════════════════════════════════════════════════ */
+/* ============================================================
+ * @brief Structure Reservation.
+ *
+ * Represente une demande de reservation faite par un locataire.
+ * ============================================================ */
 typedef struct
 {
     int   id;
     int   idLocataire;
     int   idLogement;
-    char  dateReservation[20];   /* format : JJ/MM/AAAA */
+    char  dateReservation[20];
     StatutReservation statut;
 } Reservation;
 
-/* ══════════════════════════════════════════════════════════════
- *  Structure : Session (utilisateur actuellement connecté)
- * ══════════════════════════════════════════════════════════════ */
+/* ============================================================
+ * @brief Structure Session.
+ *
+ * Contient les informations de l'utilisateur actuellement
+ * connecte. connecte = 0 signifie aucune session active.
+ * ============================================================ */
 typedef struct
 {
-    int         connecte;       /* 1 = session active */
+    int         connecte;
     Utilisateur utilisateur;
 } Session;
 
