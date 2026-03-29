@@ -5,8 +5,8 @@
  * Fournit le menu et les actions pour un locataire connecte :
  * rechercher un logement et effectuer une reservation.
  *
- * @version  1.0
- * @author   NANDA
+ * @version 1.0
+ * @author  NANDA
  * ============================================================ */
 
 #include <stdio.h>

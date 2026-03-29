@@ -1,9 +1,17 @@
-#ifndef LOCATAIRE_H
-#define LOCATAIRE_H
+/* ============================================================
+ * @file    locataire.h
+ * @brief   Declarations du module Locataire de HabitatCam.
+ * @version 1.0
+ * @author  NANDA
+ * ============================================================ */
 
-/* Fonctions locataire */
-void reserverLogement();
-void libererLogement();
+#ifndef LOCATAIRE_H_INCLUDED
+#define LOCATAIRE_H_INCLUDED
+
+#include "structures.h"
+
+void chargerReservations();
+void sauvegarderReservations();
 void menuLocataire();
 
-#endif
+#endif /* LOCATAIRE_H_INCLUDED */

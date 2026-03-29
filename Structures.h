@@ -43,8 +43,7 @@
  *   if (st == AUTH_ERR_EXISTS)
  *       printf("Email deja utilise.\n");
  * ============================================================ */
-typedef enum
-{
+typedef enum {
     AUTH_OK           =  0,  /* Operation reussie                 */
     AUTH_ERR_IO       = -1,  /* Probleme d'ouverture de fichier   */
     AUTH_ERR_NOTFOUND = -2,  /* Aucun compte avec cet email       */
@@ -55,8 +54,7 @@ typedef enum
 /* ============================================================
  * ROLES UTILISATEUR
  * ============================================================ */
-typedef enum
-{
+typedef enum {
     ROLE_LOCATAIRE      = 1,
     ROLE_BAILLEUR       = 2,
     ROLE_ADMINISTRATEUR = 3
@@ -65,8 +63,7 @@ typedef enum
 /* ============================================================
  * STATUT D'UN LOGEMENT
  * ============================================================ */
-typedef enum
-{
+typedef enum {
     STATUT_DISPONIBLE   = 1,
     STATUT_RESERVE      = 2,
     STATUT_INDISPONIBLE = 3
@@ -75,8 +72,7 @@ typedef enum
 /* ============================================================
  * STATUT D'UNE RESERVATION
  * ============================================================ */
-typedef enum
-{
+typedef enum {
     RES_EN_ATTENTE = 1,
     RES_CONFIRMEE  = 2,
     RES_ANNULEE    = 3
@@ -90,8 +86,7 @@ typedef enum
  * echouees consecutives. Quand il atteint 3, le compte
  * est automatiquement desactive (actif = 0).
  * ============================================================ */
-typedef struct
-{
+typedef struct {
     int  id;
     char nom[TAILLE_NOM];
     char prenom[TAILLE_NOM];
@@ -108,8 +103,7 @@ typedef struct
  *
  * Represente une annonce publiee par un bailleur.
  * ============================================================ */
-typedef struct
-{
+typedef struct {
     int   id;
     char  titre[TAILLE_TITRE];
     char  type[TAILLE_TYPE];
@@ -128,8 +122,7 @@ typedef struct
  *
  * Represente une demande de reservation faite par un locataire.
  * ============================================================ */
-typedef struct
-{
+typedef struct {
     int   id;
     int   idLocataire;
     int   idLogement;
@@ -143,8 +136,7 @@ typedef struct
  * Contient les informations de l'utilisateur actuellement
  * connecte. connecte = 0 signifie aucune session active.
  * ============================================================ */
-typedef struct
-{
+typedef struct {
     int         connecte;
     Utilisateur utilisateur;
 } Session;
