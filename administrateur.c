@@ -1,60 +1,69 @@
 /* ============================================================
  * @file    administrateur.c
- * @brief   Module Administrateur de HabitatCam.
+ * @brief   Module Administrateur de HabitatCam V2.0.
  *
- * Fournit les outils de supervision et de gestion complete
- * de la plateforme : utilisateurs, logements et statistiques.
- * Accessible uniquement aux comptes de role ROLE_ADMINISTRATEUR.
+ * Ameliorations V2.0 :
+ *   - Nouvelle fonction adminReactiverCompte() pour debloquer
+ *     les comptes verrouilles apres 3 echecs
+ *   - Messages d'erreur precis avec AuthStatus
+ *   - Menus strictement reserves a l'administrateur
+ *   - Validation des saisies avec saisirEntier()
  *
- * @version  1.0
- * @date    2024-2025
+ * @version 2.0
  * @author  SOUOPGUI
  * ============================================================ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Structure.h"
+#include "structures.h"
 #include "auth.h"
 #include "administrateur.h"
 
-/* ── Declarations extern (definies dans logement.c) ─────── */
+/* Lit une ligne depuis le clavier (copie de auth.c pour ce module) */
+static void lire_ligne(const char *invite, char *buffer, int taille) {
+    printf("%s", invite);
+    if (fgets(buffer, taille, stdin))
+        buffer[strcspn(buffer, "\n\r")] = '\0';
+}
+
+/* Variables definies dans logement.c */
 extern Logement    listeLogements[MAX_LOGEMENTS];
 extern int         nbLogements;
 extern Reservation listeReservations[MAX_RESERVATIONS];
 extern int         nbReservations;
 extern void        sauvegarderLogements();
-extern void        sauvegarderReservations();
-
 
 /* ============================================================
- * FONCTIONS UTILITAIRES INTERNES
+ * UTILITAIRES INTERNES
  * ============================================================ */
 
 /**
- * @brief Vide le tampon du clavier.
- *
- * A appeler systematiquement apres chaque scanf() pour eviter
- * les residus dans stdin qui provoqueraient des bugs de saisie.
+ * @brief Lit un entier depuis le clavier de facon securisee.
+ * @return L'entier saisi, ou -99 si saisie invalide.
  */
-static void viderBuffer() {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
+static int saisirEntier() {
+    char buffer[32];
+    int val;
+    if (fgets(buffer, sizeof(buffer), stdin)) {
+        buffer[strcspn(buffer, "\n\r")] = '\0';
+        if (sscanf(buffer, "%d", &val) == 1)
+            return val;
+    }
+    return -99;
 }
 
 /**
- * @brief Affiche une ligne de separation visuelle dans le terminal.
+ * @brief Affiche une ligne de separation.
  */
 static void separateur() {
     printf("---------------------------------------------\n");
 }
 
 /**
- * @brief Convertit un role (enum) en chaine de caracteres lisible.
- *
- * @param r  Le role a convertir (valeur de l'enum Role).
- * @return   Chaine correspondante : "Locataire", "Bailleur"
- *           ou "Administrateur". Retourne "Inconnu" si invalide.
+ * @brief Convertit un role en texte lisible.
+ * @param r Role a convertir.
+ * @return Chaine correspondante.
  */
 static const char* roleEnTexte(Role r) {
     switch (r) {
@@ -66,13 +75,11 @@ static const char* roleEnTexte(Role r) {
 }
 
 /**
- * @brief Convertit un statut de logement (enum) en chaine lisible.
- *
- * @param s  Le statut a convertir (valeur de l'enum StatutLogement).
- * @return   "Disponible", "Reserve" ou "Indisponible".
- *           Retourne "Inconnu" si la valeur est invalide.
+ * @brief Convertit un statut logement en texte lisible.
+ * @param s Statut a convertir.
+ * @return Chaine correspondante.
  */
-static const char* statutLogementEnTexte(StatutLogement s) {
+static const char* statutEnTexte(StatutLogement s) {
     switch (s) {
         case STATUT_DISPONIBLE:   return "Disponible";
         case STATUT_RESERVE:      return "Reserve";
@@ -82,18 +89,17 @@ static const char* statutLogementEnTexte(StatutLogement s) {
 }
 
 /**
- * @brief Verifie que la session courante est bien celle d'un administrateur.
+ * @brief Verifie que l'utilisateur connecte est bien un admin.
  *
- * Controle que sessionCourante.connecte == 1 et que le role est
- * ROLE_ADMINISTRATEUR. Affiche un message de refus si ce n'est pas le cas.
+ * Bloque l'acces si le role n'est pas ROLE_ADMINISTRATEUR.
+ * A appeler en debut de chaque fonction sensible.
  *
- * @return 1 si l'utilisateur courant est administrateur, 0 sinon.
- * @warning A appeler en debut de chaque fonction sensible de ce module.
+ * @return 1 si admin, 0 sinon.
  */
 static int verifierAdmin() {
     if (!sessionCourante.connecte ||
         sessionCourante.utilisateur.role != ROLE_ADMINISTRATEUR) {
-        printf("[ACCES REFUSE] Section reservee a l'administrateur.\n");
+        printf("[ACCES REFUSE] Cette section est reservee a l'administrateur.\n");
         return 0;
     }
     return 1;
@@ -105,10 +111,10 @@ static int verifierAdmin() {
  * ============================================================ */
 
 /**
- * @brief Affiche la liste complete de tous les utilisateurs inscrits.
+ * @brief Affiche la liste complete de tous les utilisateurs.
  *
- * Presente un tableau avec l'ID, le nom, le prenom, l'email,
- * le role et le statut (Actif / DESACTIVE) de chaque compte.
+ * Affiche ID, nom, prenom, email, role, echecs et statut
+ * de chaque compte enregistre sur la plateforme.
  *
  * @note Accessible uniquement au role Administrateur.
  */
@@ -116,17 +122,22 @@ void adminVoirUtilisateurs() {
     if (!verifierAdmin()) return;
 
     printf("\n[LISTE DES UTILISATEURS]\n");
-
-    if (nbUtilisateurs == 0) { printf("Aucun utilisateur enregistre.\n"); return; }
+    if (nbUtilisateurs == 0) {
+        printf("Aucun utilisateur enregistre.\n");
+        return;
+    }
 
     separateur();
-    printf("%-4s %-15s %-15s %-25s %-14s %-6s\n", "ID", "Nom", "Prenom", "Email", "Role", "Statut");
+    printf("%-4s %-15s %-15s %-25s %-14s %-7s %s\n",
+           "ID", "Nom", "Prenom", "Email", "Role", "Echecs", "Statut");
     separateur();
+
     for (int i = 0; i < nbUtilisateurs; i++) {
         Utilisateur *u = &listeUtilisateurs[i];
-        printf("%-4d %-15s %-15s %-25s %-14s %s\n",
+        printf("%-4d %-15s %-15s %-25s %-14s %-7d %s\n",
                u->id, u->nom, u->prenom, u->email,
-               roleEnTexte(u->role), u->actif ? "Actif" : "DESACTIVE");
+               roleEnTexte(u->role), u->nbEchecs,
+               u->actif ? "Actif" : "DESACTIVE");
     }
     separateur();
     printf("Total : %d utilisateur(s)\n", nbUtilisateurs);
@@ -135,34 +146,41 @@ void adminVoirUtilisateurs() {
 /**
  * @brief Active ou desactive le compte d'un utilisateur.
  *
- * Inverse la valeur du champ 'actif' de l'utilisateur cible.
- * Un compte desactive ne peut plus se connecter.
- * La modification est sauvegardee immediatement.
+ * Inverse le champ actif du compte cible.
+ * Remet aussi nbEchecs a 0 quand on reactive un compte.
  *
- * @note Accessible uniquement au role Administrateur.
- * @warning Ne peut pas desactiver son propre compte ni celui
- *          d'un autre administrateur.
+ * @note Ne peut pas modifier son propre compte ni un autre admin.
  */
 void adminToggleCompte() {
     if (!verifierAdmin()) return;
-
     adminVoirUtilisateurs();
-    int id;
-    printf("\nID de l'utilisateur a activer/desactiver : ");
-    scanf("%d", &id); viderBuffer();
 
-    if (id == sessionCourante.utilisateur.id) {
-        printf("[ERREUR] Impossible de desactiver votre propre compte.\n"); return;
+    printf("\nID du compte a activer/desactiver : ");
+    int id = saisirEntier();
+
+    if (id == -99) {
+        printf("[ERREUR] Saisie invalide.\n");
+        return;
     }
+    if (id == sessionCourante.utilisateur.id) {
+        printf("[ERREUR] Impossible de modifier votre propre compte.\n");
+        return;
+    }
+
     for (int i = 0; i < nbUtilisateurs; i++) {
         if (listeUtilisateurs[i].id == id) {
             if (listeUtilisateurs[i].role == ROLE_ADMINISTRATEUR) {
-                printf("[ERREUR] Impossible de modifier un compte administrateur.\n"); return;
+                printf("[ERREUR] Impossible de modifier un autre administrateur.\n");
+                return;
             }
             listeUtilisateurs[i].actif = !listeUtilisateurs[i].actif;
+            /* Si on reactive, remettre les echecs a 0 */
+            if (listeUtilisateurs[i].actif == 1)
+                listeUtilisateurs[i].nbEchecs = 0;
             sauvegarderUtilisateurs();
-            printf("[OK] Compte de %s : %s\n", listeUtilisateurs[i].prenom,
-                   listeUtilisateurs[i].actif ? "ACTIF" : "DESACTIVE");
+            printf("[OK] Compte de %s : %s\n",
+                   listeUtilisateurs[i].prenom,
+                   listeUtilisateurs[i].actif ? "ACTIVE" : "DESACTIVE");
             return;
         }
     }
@@ -170,38 +188,95 @@ void adminToggleCompte() {
 }
 
 /**
- * @brief Supprime definitivement un utilisateur de la plateforme.
+ * @brief Reactive specifiquement un compte verrouille.
  *
- * Decale le tableau listeUtilisateurs pour effacer l'entree,
- * decremente nbUtilisateurs et sauvegarde immediatement.
+ * Fonction dediee aux comptes bloques apres 3 echecs de
+ * connexion. Remet actif = 1 et nbEchecs = 0.
  *
  * @note Accessible uniquement au role Administrateur.
- * @warning Action irreversible. Ne peut pas supprimer son propre
- *          compte ni un autre compte administrateur.
+ */
+void adminReactiverCompte() {
+    if (!verifierAdmin()) return;
+
+    printf("\n[COMPTES VERROUILLES]\n");
+    separateur();
+
+    int trouve = 0;
+    for (int i = 0; i < nbUtilisateurs; i++) {
+        if (listeUtilisateurs[i].actif == 0) {
+            printf("ID: %-4d | %-15s %-15s | Echecs: %d\n",
+                   listeUtilisateurs[i].id,
+                   listeUtilisateurs[i].prenom,
+                   listeUtilisateurs[i].nom,
+                   listeUtilisateurs[i].nbEchecs);
+            trouve = 1;
+        }
+    }
+
+    if (!trouve) {
+        printf("Aucun compte verrouille.\n");
+        return;
+    }
+
+    separateur();
+    printf("ID du compte a reactiver : ");
+    int id = saisirEntier();
+
+    if (id == -99) {
+        printf("[ERREUR] Saisie invalide.\n");
+        return;
+    }
+
+    for (int i = 0; i < nbUtilisateurs; i++) {
+        if (listeUtilisateurs[i].id == id) {
+            listeUtilisateurs[i].actif    = 1;
+            listeUtilisateurs[i].nbEchecs = 0;
+            sauvegarderUtilisateurs();
+            printf("[OK] Compte de %s reactive avec succes.\n",
+                   listeUtilisateurs[i].prenom);
+            return;
+        }
+    }
+    printf("[ERREUR] Aucun utilisateur avec l'ID %d.\n", id);
+}
+
+/**
+ * @brief Supprime definitivement un utilisateur.
+ *
+ * Decale le tableau et decremente nbUtilisateurs.
+ *
+ * @note Action irreversible.
+ * @note Ne peut pas supprimer son propre compte ni un admin.
  */
 void adminSupprimerUtilisateur() {
     if (!verifierAdmin()) return;
-
     adminVoirUtilisateurs();
-    int id;
-    printf("\nID de l'utilisateur a supprimer : ");
-    scanf("%d", &id); viderBuffer();
 
-    if (id == sessionCourante.utilisateur.id) {
-        printf("[ERREUR] Impossible de supprimer votre propre compte.\n"); return;
+    printf("\nID du compte a supprimer : ");
+    int id = saisirEntier();
+
+    if (id == -99) {
+        printf("[ERREUR] Saisie invalide.\n");
+        return;
     }
+    if (id == sessionCourante.utilisateur.id) {
+        printf("[ERREUR] Impossible de supprimer votre propre compte.\n");
+        return;
+    }
+
     for (int i = 0; i < nbUtilisateurs; i++) {
         if (listeUtilisateurs[i].id == id) {
             if (listeUtilisateurs[i].role == ROLE_ADMINISTRATEUR) {
-                printf("[ERREUR] Impossible de supprimer un administrateur.\n"); return;
+                printf("[ERREUR] Impossible de supprimer un administrateur.\n");
+                return;
             }
-            char nom[TAILLE_NOM];
-            strcpy(nom, listeUtilisateurs[i].prenom);
+            char prenom[TAILLE_NOM];
+            strcpy(prenom, listeUtilisateurs[i].prenom);
             for (int j = i; j < nbUtilisateurs - 1; j++)
                 listeUtilisateurs[j] = listeUtilisateurs[j + 1];
             nbUtilisateurs--;
             sauvegarderUtilisateurs();
-            printf("[OK] Compte de %s (ID: %d) supprime.\n", nom, id);
+            printf("[OK] Compte de %s (ID: %d) supprime.\n", prenom, id);
             return;
         }
     }
@@ -214,21 +289,20 @@ void adminSupprimerUtilisateur() {
  * ============================================================ */
 
 /**
- * @brief Affiche la liste complete de tous les logements de la plateforme.
- *
- * Presente l'ID, le titre, le type, la ville, la superficie,
- * le prix mensuel et le statut de chaque logement enregistre.
- *
+ * @brief Affiche tous les logements de la plateforme.
  * @note Accessible uniquement au role Administrateur.
  */
 void adminVoirLogements() {
     if (!verifierAdmin()) return;
 
     printf("\n[LISTE DES LOGEMENTS]\n");
-    if (nbLogements == 0) { printf("Aucun logement enregistre.\n"); return; }
+    if (nbLogements == 0) {
+        printf("Aucun logement enregistre.\n");
+        return;
+    }
 
     separateur();
-    printf("%-4s %-20s %-12s %-15s %-10s %-12s %-12s\n",
+    printf("%-4s %-20s %-12s %-15s %-10s %-12s %s\n",
            "ID", "Titre", "Type", "Ville", "Surf(m2)", "Prix(FCFA)", "Statut");
     separateur();
     for (int i = 0; i < nbLogements; i++) {
@@ -236,29 +310,28 @@ void adminVoirLogements() {
         printf("%-4d %-20s %-12s %-15s %-10.1f %-12.0f %s\n",
                l->id, l->titre, l->type, l->ville,
                l->superficie, l->prixMensuel,
-               statutLogementEnTexte(l->statut));
+               statutEnTexte(l->statut));
     }
     separateur();
     printf("Total : %d logement(s)\n", nbLogements);
 }
 
 /**
- * @brief Supprime definitivement un logement de la plateforme.
- *
- * Decale le tableau listeLogements, decremente nbLogements
- * et sauvegarde immediatement dans le fichier.
- *
+ * @brief Supprime definitivement un logement.
+ * @note Action irreversible.
  * @note Accessible uniquement au role Administrateur.
- * @warning Action irreversible. Les reservations liees au logement
- *          supprime ne sont pas automatiquement annulees en V1.0.
  */
 void adminSupprimerLogement() {
     if (!verifierAdmin()) return;
-
     adminVoirLogements();
-    int id;
+
     printf("\nID du logement a supprimer : ");
-    scanf("%d", &id); viderBuffer();
+    int id = saisirEntier();
+
+    if (id == -99) {
+        printf("[ERREUR] Saisie invalide.\n");
+        return;
+    }
 
     for (int i = 0; i < nbLogements; i++) {
         if (listeLogements[i].id == id) {
@@ -283,20 +356,19 @@ void adminSupprimerLogement() {
 /**
  * @brief Affiche le tableau de bord general de la plateforme.
  *
- * Calcule et affiche en temps reel :
- *  - Repartition des utilisateurs par role (locataires, bailleurs, admins)
- *  - Nombre de comptes actifs et desactives
- *  - Repartition des logements par statut (disponible, reserve, indisponible)
- *  - Nombre total de reservations enregistrees
+ * Calcule en temps reel :
+ *   - Repartition des utilisateurs par role
+ *   - Comptes actifs / desactives / verrouilles
+ *   - Repartition des logements par statut
+ *   - Nombre total de reservations
  *
  * @note Accessible uniquement au role Administrateur.
- * @note Les donnees sont calculees depuis les tableaux en memoire,
- *       donc toujours a jour sans relecture du fichier.
  */
 void adminStatistiques() {
     if (!verifierAdmin()) return;
 
-    int nbLoc=0, nbBaill=0, nbAdm=0, nbActifs=0, nbInactifs=0;
+    int nbLoc=0, nbBaill=0, nbAdm=0;
+    int nbActifs=0, nbInactifs=0, nbVerrouilles=0;
     int nbDispo=0, nbRes=0, nbIndispo=0;
 
     for (int i = 0; i < nbUtilisateurs; i++) {
@@ -305,7 +377,13 @@ void adminStatistiques() {
             case ROLE_BAILLEUR:       nbBaill++; break;
             case ROLE_ADMINISTRATEUR: nbAdm++;   break;
         }
-        listeUtilisateurs[i].actif ? nbActifs++ : nbInactifs++;
+        if (listeUtilisateurs[i].actif)
+            nbActifs++;
+        else {
+            nbInactifs++;
+            if (listeUtilisateurs[i].nbEchecs >= 3)
+                nbVerrouilles++;
+        }
     }
     for (int i = 0; i < nbLogements; i++) {
         switch (listeLogements[i].statut) {
@@ -321,7 +399,9 @@ void adminStatistiques() {
     printf("  Locataires      : %d\n", nbLoc);
     printf("  Bailleurs       : %d\n", nbBaill);
     printf("  Administrateurs : %d\n", nbAdm);
-    printf("  Actifs          : %d  |  Desactives : %d\n", nbActifs, nbInactifs);
+    printf("  Actifs          : %d\n", nbActifs);
+    printf("  Desactives      : %d\n", nbInactifs);
+    printf("  Verrouilles     : %d  (trop d'echecs de connexion)\n", nbVerrouilles);
     printf("\nLOGEMENTS (%d)\n", nbLogements);
     separateur();
     printf("  Disponibles     : %d\n", nbDispo);
@@ -330,53 +410,186 @@ void adminStatistiques() {
     printf("\nRESERVATIONS\n");
     separateur();
     printf("  Total           : %d\n", nbReservations);
-    separateur();
 }
 
 
 /* ============================================================
- * MENU PRINCIPAL ADMINISTRATEUR
+ * GESTION DES DEMANDES DE REINITIALISATION
+ * ============================================================ */
+
+/**
+ * @brief Affiche et traite les demandes de reinitialisation de mdp.
+ *
+ * Lit data/demandes_reinit.txt et liste les utilisateurs
+ * ayant fait une demande. L'admin peut alors :
+ *   1. Attribuer un mot de passe temporaire a un utilisateur
+ *   2. Reactiver son compte automatiquement
+ *   L'utilisateur devra ensuite changer ce mot de passe
+ *   temporaire via l'option "Changer mon mot de passe".
+ *
+ * @note Accessible uniquement au role Administrateur.
+ */
+void adminGererDemandes() {
+    if (!verifierAdmin()) return;
+
+    printf("\n[DEMANDES DE REINITIALISATION DE MOT DE PASSE]\n");
+    separateur();
+
+    /* Lire le fichier des demandes */
+    FILE *f = fopen("data/demandes_reinit.txt", "r");
+    if (!f) {
+        printf("Aucune demande en attente.\n");
+        return;
+    }
+
+    char ligne[TAILLE_EMAIL + 20];
+    char emails[50][TAILLE_EMAIL];
+    int  nbDemandes = 0;
+
+    /* Afficher toutes les demandes EN_ATTENTE */
+    while (fgets(ligne, sizeof(ligne), f) && nbDemandes < 50) {
+        ligne[strcspn(ligne, "\n\r")] = '\0';
+
+        /* Format : email|statut */
+        char *sep = strchr(ligne, '|');
+        if (!sep) continue;
+        *sep = '\0';
+        char *statut = sep + 1;
+
+        if (strcmp(statut, "EN_ATTENTE") == 0) {
+            strncpy(emails[nbDemandes], ligne, TAILLE_EMAIL - 1);
+            printf("%d. %s\n", nbDemandes + 1, emails[nbDemandes]);
+            nbDemandes++;
+        }
+    }
+    fclose(f);
+
+    if (nbDemandes == 0) {
+        printf("Aucune demande en attente.\n");
+        return;
+    }
+
+    separateur();
+    printf("Numero de la demande a traiter (0=Annuler) : ");
+    int choix = saisirEntier();
+
+    if (choix <= 0 || choix > nbDemandes) {
+        printf("Annule.\n");
+        return;
+    }
+
+    /* Trouver l'utilisateur correspondant */
+    char *emailCible = emails[choix - 1];
+    int index = -1;
+    for (int i = 0; i < nbUtilisateurs; i++) {
+        if (strcmp(listeUtilisateurs[i].email, emailCible) == 0) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1) {
+        printf("[ERREUR] Utilisateur introuvable.\n");
+        return;
+    }
+
+    /* Saisir le mot de passe temporaire */
+    char mdpTemp[TAILLE_MDP];
+    printf("\nMot de passe temporaire pour %s %s : ",
+           listeUtilisateurs[index].prenom,
+           listeUtilisateurs[index].nom);
+    lire_ligne("", mdpTemp, TAILLE_MDP);
+
+    /* Mettre a jour le compte */
+    strncpy(listeUtilisateurs[index].motDePasse, mdpTemp, TAILLE_MDP - 1);
+    listeUtilisateurs[index].motDePasse[TAILLE_MDP - 1] = '\0';
+    listeUtilisateurs[index].actif    = 1;
+    listeUtilisateurs[index].nbEchecs = 0;
+    sauvegarderUtilisateurs();
+
+    /* Marquer la demande comme TRAITEE dans le fichier */
+    FILE *fin  = fopen("data/demandes_reinit.txt", "r");
+    FILE *fout = fopen("data/demandes_reinit_tmp.txt", "w");
+    if (fin && fout) {
+        char buf[TAILLE_EMAIL + 20];
+        while (fgets(buf, sizeof(buf), fin)) {
+            buf[strcspn(buf, "\n\r")] = '\0';
+            char *s = strchr(buf, '|');
+            if (s) {
+                *s = '\0';
+                if (strcmp(buf, emailCible) == 0)
+                    fprintf(fout, "%s|TRAITE\n", buf);
+                else
+                    fprintf(fout, "%s|%s\n", buf, s + 1);
+            }
+        }
+        fclose(fin);
+        fclose(fout);
+        remove("data/demandes_reinit.txt");
+        rename("data/demandes_reinit_tmp.txt", "data/demandes_reinit.txt");
+    }
+
+    printf("\n[OK] Mot de passe temporaire attribue a %s.\n",
+           listeUtilisateurs[index].prenom);
+    printf("     Compte reactive. L'utilisateur doit changer\n");
+    printf("     son mot de passe a la prochaine connexion.\n");
+}
+
+/* ============================================================
+ * MENU ADMINISTRATEUR
  * ============================================================ */
 
 /**
  * @brief Point d'entree du module administrateur.
  *
- * Affiche le panneau d'administration et traite les choix
- * de l'administrateur connecte. La boucle tourne jusqu'a
- * ce que l'administrateur choisisse de se deconnecter (choix 0)
- * ou que la session soit fermee.
+ * Affiche toutes les fonctions reservees a l'admin.
+ * Boucle jusqu'a deconnexion (choix 0).
  *
- * @note Verifie en premier lieu que l'utilisateur connecte
- *       est bien un administrateur via verifierAdmin().
- * @see  verifierAdmin(), deconnecterUtilisateur()
+ * @note Verifie en premier lieu le role via verifierAdmin().
  */
 void menuAdministrateur() {
     if (!verifierAdmin()) return;
-    int choix;
 
+    int choix;
     do {
         printf("\n=== PANNEAU ADMINISTRATEUR ===\n");
         printf("Connecte : %s\n", sessionCourante.utilisateur.prenom);
         separateur();
         printf("1. Voir tous les utilisateurs\n");
         printf("2. Activer / Desactiver un compte\n");
-        printf("3. Supprimer un utilisateur\n");
-        printf("4. Voir tous les logements\n");
-        printf("5. Supprimer un logement\n");
-        printf("6. Statistiques generales\n");
+        printf("3. Reactiver un compte verrouille\n");
+        printf("4. Supprimer un utilisateur\n");
+        printf("5. Voir tous les logements\n");
+        printf("6. Supprimer un logement\n");
+        printf("7. Statistiques generales\n");
+        printf("8. Modifier le code secret admin\n");
+        printf("9. Demandes de reinitialisation de mdp\n");
+        printf("10. Personnalisation du profil\n");
         printf("0. Se deconnecter\n");
+        separateur();
         printf("Choix : ");
-        scanf("%d", &choix); viderBuffer();
+        choix = saisirEntier();
+
+        if (choix == -99) {
+            printf("[ERREUR] Entrez un chiffre valide (0 a 10).\n");
+            continue;
+        }
 
         switch (choix) {
-            case 1: adminVoirUtilisateurs();    break;
-            case 2: adminToggleCompte();         break;
-            case 3: adminSupprimerUtilisateur(); break;
-            case 4: adminVoirLogements();        break;
-            case 5: adminSupprimerLogement();    break;
-            case 6: adminStatistiques();         break;
-            case 0: deconnecterUtilisateur();    break;
-            default: printf("[ERREUR] Choix invalide.\n");
+            case 1:  adminVoirUtilisateurs();    break;
+            case 2:  adminToggleCompte();         break;
+            case 3:  adminReactiverCompte();      break;
+            case 4:  adminSupprimerUtilisateur(); break;
+            case 5:  adminVoirLogements();        break;
+            case 6:  adminSupprimerLogement();    break;
+            case 7:  adminStatistiques();         break;
+            case 8:  modifierCodeSecret();        break;
+            case 9:  adminGererDemandes();        break;
+            case 10: menuPersonnalisation();      break;
+            case 0:  deconnecterUtilisateur();    break;
+            default:
+                printf("[ERREUR] Le choix %d n'existe pas.\n", choix);
+                printf("         Veuillez choisir entre 0 et 10.\n");
         }
     } while (choix != 0 && sessionCourante.connecte);
 }

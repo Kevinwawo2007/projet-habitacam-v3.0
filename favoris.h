@@ -7,7 +7,11 @@
  * disponibles.
  *
  * Fichier de donnees :
+
+ *   data/favoris.txt â€” format : idLocataire|idLogement|dateAjout
+=======
  *   data/favoris.txt — format : idLocataire|idLogement|dateAjout
+
  *
  * @version 2.0
  * @author  TOGNANG
@@ -18,7 +22,9 @@
 
 #include "structures.h"
 
-/* ============================================================
+/* ==================================================
+ * STRUCTURE â€” Favori
+=======
  * STRUCTURE — Favori
  * ============================================================ */
 

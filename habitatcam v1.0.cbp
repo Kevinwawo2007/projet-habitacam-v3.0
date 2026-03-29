@@ -31,18 +31,40 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Administrateur.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Administrateur.h" />
-		<Unit filename="Auth.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Auth.h" />
-		<Unit filename="Structure.h" />
+		<Unit filename="Bailleur.h" />
+		<Unit filename="Logement.h" />
+		<Unit filename="Structures.h" />
+		<Unit filename="administrateur.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="administrateur.h" />
+		<Unit filename="auth.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bailleur.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="habitatcam v1.0.cbp" />
+		<Unit filename="habitatcam v1.0.depend" />
+		<Unit filename="habitatcam v1.0.layout" />
+		<Unit filename="locataire.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="locataire.h" />
+		<Unit filename="logement.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+<<<<<<< HEAD
+		<Unit filename="matching.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="matching.h" />
+=======
+>>>>>>> aa7cf80d5abb2a6e192b2d15b929a293523bfa36
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
