@@ -16,8 +16,10 @@
 #include "auth.h"
 #include "logement.h"
 #include "locataire.h"
+#include "matching.h"
+#include "favoris.h"
 
-/* ── Variables globales des reservations ───────────────────── */
+/* -- Variables globales des reservations --------------------- */
 
 /** @brief Tableau de toutes les reservations en memoire. */
 Reservation listeReservations[MAX_RESERVATIONS];
@@ -32,6 +34,24 @@ static void viderBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
+/**
+ * @brief  Lit un entier depuis le clavier de facon securisee.
+ *
+ * Si l'utilisateur entre une lettre ou un caractere invalide,
+ * vide le buffer et retourne -99 pour signaler l'erreur.
+ *
+ * @return L'entier saisi, ou -99 si la saisie est invalide.
+ */
+static int saisirEntier() {
+    int val;
+    if (scanf("%d", &val) != 1) {
+        int c; while ((c = getchar()) != '\n' && c != EOF);
+        return -99; /* Code d'erreur : saisie invalide */
+    }
+    int c; while ((c = getchar()) != '\n' && c != EOF);
+    return val;
+}
+
 
 /**
  * @brief Charge les reservations depuis le fichier texte.
@@ -60,7 +80,7 @@ void chargerReservations() {
  * @note A appeler apres chaque nouvelle reservation.
  */
 void sauvegarderReservations() {
-    system("mkdir -p data");
+    system("if not exist data mkdir data");
     FILE *f = fopen(FICHIER_RESERVATIONS, "w");
     if (f == NULL) {
         printf("[ERREUR] Impossible d'ouvrir le fichier reservations.\n");
@@ -197,21 +217,31 @@ void menuLocataire() {
         printf("\n=== MENU LOCATAIRE ===\n");
         printf("Connecte : %s\n", sessionCourante.utilisateur.prenom);
         printf("1. Voir les logements disponibles\n");
-        printf("2. Rechercher un logement\n");
+        printf("2. Recherche avancee (avec recommandations)\n");
         printf("3. Reserver un logement\n");
         printf("4. Voir mes reservations\n");
+        printf("5. Mes favoris\n");
+        printf("6. Personnalisation du profil\n");
         printf("0. Se deconnecter\n");
         printf("Choix : ");
-        scanf("%d", &choix);
-        viderBuffer();
+        choix = saisirEntier();
+
+        if (choix == -99) {
+            printf("[ERREUR] Entrez un chiffre valide (0 a 6).\n");
+            continue;
+        }
 
         switch (choix) {
             case 1: afficherLogements();      break;
-            case 2: rechercherLogement();     break;
+            case 2: rechercheAvancee();        break;
             case 3: reserverLogement();       break;
             case 4: voirMesReservations();    break;
+            case 5: menuFavoris();            break;
+            case 6: menuPersonnalisation();   break;
             case 0: deconnecterUtilisateur(); break;
-            default: printf("[ERREUR] Choix invalide.\n");
+            default:
+                printf("[ERREUR] Le choix %d n'existe pas.\n", choix);
+                printf("         Veuillez choisir entre 0 et 5.\n");
         }
     } while (choix != 0 && sessionCourante.connecte);
 }
