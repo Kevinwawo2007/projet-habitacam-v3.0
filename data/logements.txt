@@ -1,4 +1,0 @@
-1|appartement|appartement|nouveau sur le marcher|yaounde|ekounou|200.0|4|100000|2|5
-2|studio|studio|1 chambre 1 douche 1 salon|douala|bonaberi|5.0|3|30000|2|5
-3|logement|studio|1 chambre 1 salon  salle de bain|Bafoussam|socada|10.0|3|35000|2|5
-4|logement|appartement meubles|2 chambres 1 salon 2 douches|Yaounde|Odza|30.0|5|90000|1|5
