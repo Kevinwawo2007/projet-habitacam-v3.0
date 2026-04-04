@@ -14,6 +14,8 @@
 #include "administrateur.h"
 #include "matching.h"
 #include "favoris.h"
+#include "notation.h"
+#include "notification.h"
 
 /**
  * @brief Redirige vers le bon menu selon le role connecte.
@@ -22,11 +24,14 @@ static void lancerMenuRole() {
     switch (sessionCourante.utilisateur.role) {
         case ROLE_LOCATAIRE:
             /* Afficher les recommandations a la connexion */
+            notifierNouveauxLogements(sessionCourante.utilisateur.id);
+            afficherNotifications(sessionCourante.utilisateur.id);
             afficherRecommandations(sessionCourante.utilisateur.id);
             verifierAlertesFavoris(sessionCourante.utilisateur.id);
             menuLocataire();
             break;
         case ROLE_BAILLEUR:
+            afficherNotifications(sessionCourante.utilisateur.id);
             menuBailleur();
             break;
         case ROLE_ADMINISTRATEUR:

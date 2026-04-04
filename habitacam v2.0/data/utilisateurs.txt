@@ -1,1 +1,6 @@
-1|Admin|Super|admin@habitatcam.cm|000000000|admin123|3|0|1
+1|WAWO|Kevin|kevin@habitatcam.cm|688255594|Yaounde237|3|0|1
+2|SIANI|Bruce|bruce@habitatcam.cm|699958000|Yaounde2007|2|0|1
+3|TOGNANG |Jordan |jordan@habitacam.cm|677001122|Yaounde2007|2|0|1
+4|FOMEKONG|Josue|josue@habitatcam.cm|688559400|Yaounde2007|1|0|1
+5|NANDA|Yepkep|yepkep@habitatcam.cm|655443322|Yaounde2007|1|0|1
+6|NDOMBOU |Stone |stone@habitatcam.cm|677889900|Yaounde2007|1|0|1

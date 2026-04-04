@@ -124,37 +124,26 @@ static int saisirEntier() {
 }
 
 /**
- * @brief Reaffiche la ligne de saisie du mot de passe.
+ * @brief Saisit un mot de passe de facon securisee avec toggle TAB.
  *
- * Efface la ligne courante avec \r et reaffiche le libelle
- * suivi du contenu en mode cache (****) ou visible.
- */
-static void afficherLigneMdp(const char *libelle,
-                              const char *mdp,
-                              int len, int visible) {
-    int i;
-    printf("\r%s                                        \r%s",
-           libelle, libelle);
-    if (visible) {
-        printf("[TAB=cacher] %s", mdp);
-    } else {
-        printf("[TAB=voir  ] ");
-        for (i = 0; i < len; i++) putchar('*');
-    }
-    fflush(stdout);
-}
-
-/**
- * @brief Saisit un mot de passe avec toggle de visibilite.
+ * PRINCIPE DE FONCTIONNEMENT :
+ *   Le libelle (ex: "Mot de passe : ") est affiche UNE SEULE FOIS
+ *   avant la boucle. Ensuite, on affiche uniquement l indicateur
+ *   de mode ([TAB=voir]) et les etoiles/caracteres. Pour effacer
+ *   et reafficher proprement, on utilise des caracteres Backspace
+ *   (\b) plutot que \r, ce qui evite le bug de superposition
+ *   observe quand plusieurs lignes s affichent en meme temps.
  *
- * Lit chaque touche avec _getch() sans l'afficher.
- * TAB bascule entre mode cache (****) et visible.
- * Quand l'utilisateur retape apres avoir active visible,
- * le mode repasse en cache automatiquement.
+ * POURQUOI PAS \r :
+ *   \r revient au debut de la ligne mais ne tient pas compte
+ *   de la longueur du libelle. Sur certains terminaux Windows,
+ *   cela cause la repetition du libelle sur plusieurs colonnes.
  *
- * IMPORTANT : Cette fonction ne laisse PAS de \n dans stdin
- * car elle utilise _getch(). Il faut appeler viderStdin()
- * avant tout appel a lire_ligne() qui suit.
+ * TOUCHES DISPONIBLES :
+ *   TAB       -> bascule visible (*) / cache (texte)
+ *   Backspace -> efface le dernier caractere
+ *   Entree    -> valide et termine
+ *   Autres    -> ajoute au mot de passe
  *
  * @param libelle Texte affiche avant la zone de saisie.
  * @param mdp     Tableau ou stocker le mot de passe.
@@ -163,52 +152,89 @@ static void afficherLigneMdp(const char *libelle,
 static void saisirMotDePasse(const char *libelle, char *mdp, int taille) {
     int len     = 0;
     int visible = 0;
-    int c;
+    int c, i;
 
     mdp[0] = '\0';
-    printf("%s", libelle);
-    afficherLigneMdp(libelle, mdp, len, visible);
+
+    /* Afficher le libelle UNE SEULE FOIS
+     * puis l indicateur de mode initial */
+    printf("%s[TAB=voir  ] ", libelle);
+    fflush(stdout);
 
     while (1) {
         c = _getch();
 
         #ifdef _WIN32
-        /* Touches speciales Windows (fleches, F1...) :
-         * envoient 0 ou 0xE0 + 1 code supplementaire. Ignorer. */
-        if (c == 0 || c == 0xE0) { _getch(); continue; }
+        /* Touches speciales Windows (fleches, F1-F12...) :
+         * premier octet = 0 ou 0xE0, second = code specifique.
+         * On lit et ignore les deux octets. */
+        if (c == 0 || c == 0xE0) {
+            _getch();
+            continue;
+        }
         #endif
 
-        /* Entree : fin de saisie */
+        /* ── Entree : fin de saisie ── */
         if (c == '\r' || c == '\n') {
+            /* Si on etait en visible, effacer et remontrer en cache */
             if (visible) {
-                visible = 0;
-                afficherLigneMdp(libelle, mdp, len, visible);
+                /* Effacer : indicateur (13 chars) + len caracteres */
+                for (i = 0; i < 13 + len; i++) printf("\b \b");
+                printf("[TAB=voir  ] ");
+                for (i = 0; i < len; i++) putchar('*');
+                fflush(stdout);
             }
             printf("\n");
             break;
         }
 
-        /* TAB : basculer visible / cache */
+        /* ── TAB : basculer visible / cache ── */
         if (c == 9) {
+            if (!visible) {
+                /* Passer en visible :
+                 * effacer les etoiles + indicateur cache
+                 * puis afficher indicateur visible + texte clair */
+                for (i = 0; i < 13 + len; i++) printf("\b \b");
+                printf("[TAB=cacher] %s", mdp);
+            } else {
+                /* Repasser en cache :
+                 * effacer texte + indicateur visible
+                 * puis afficher indicateur cache + etoiles */
+                for (i = 0; i < 13 + len; i++) printf("\b \b");
+                printf("[TAB=voir  ] ");
+                for (i = 0; i < len; i++) putchar('*');
+            }
             visible = !visible;
-            afficherLigneMdp(libelle, mdp, len, visible);
+            fflush(stdout);
             continue;
         }
 
-        /* Backspace : Windows=8, Linux=127 */
+        /* ── Backspace : effacer le dernier caractere ── */
         if ((c == 8 || c == 127) && len > 0) {
             len--;
             mdp[len] = '\0';
-            afficherLigneMdp(libelle, mdp, len, visible);
+            /* Effacer 1 caractere a l ecran (etoile ou lettre) */
+            printf("\b \b");
+            fflush(stdout);
             continue;
         }
 
-        /* Caractere imprimable */
+        /* ── Caractere imprimable (codes 32 a 126) ── */
         if (c >= 32 && c <= 126 && len < taille - 1) {
-            if (visible) visible = 0; /* retaper => recacher */
+            /* Si on etait en visible et on retape :
+             * repasser en cache automatiquement */
+            if (visible) {
+                /* Effacer texte visible + indicateur */
+                for (i = 0; i < 13 + len; i++) printf("\b \b");
+                printf("[TAB=voir  ] ");
+                for (i = 0; i < len; i++) putchar('*');
+                visible = 0;
+            }
             mdp[len++] = (char)c;
             mdp[len]   = '\0';
-            afficherLigneMdp(libelle, mdp, len, visible);
+            /* Afficher une etoile (mode cache) */
+            putchar('*');
+            fflush(stdout);
         }
     }
 }

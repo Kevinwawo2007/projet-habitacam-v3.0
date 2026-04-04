@@ -18,6 +18,8 @@
 #include "locataire.h"
 #include "matching.h"
 #include "favoris.h"
+#include "notation.h"
+#include "notification.h"
 
 /* -- Variables globales des reservations --------------------- */
 
@@ -150,6 +152,11 @@ static void reserverLogement() {
             listeLogements[i].statut = STATUT_RESERVE;
             sauvegarderLogements();
 
+            /* Notifier le bailleur */
+            notifierReservation(listeLogements[i].idBailleur,
+                                listeLogements[i].titre,
+                                sessionCourante.utilisateur.prenom);
+
             printf("[OK] Logement \"%s\" reserve avec succes !\n",
                    listeLogements[i].titre);
             printf("     Votre reservation ID : %d\n", r.id);
@@ -221,13 +228,14 @@ void menuLocataire() {
         printf("3. Reserver un logement\n");
         printf("4. Voir mes reservations\n");
         printf("5. Mes favoris\n");
-        printf("6. Personnalisation du profil\n");
+        printf("6. Notations et avis\n");
+        printf("7. Personnalisation du profil\n");
         printf("0. Se deconnecter\n");
         printf("Choix : ");
         choix = saisirEntier();
 
         if (choix == -99) {
-            printf("[ERREUR] Entrez un chiffre valide (0 a 6).\n");
+            printf("[ERREUR] Entrez un chiffre valide (0 a 7).\n");
             continue;
         }
 
@@ -237,7 +245,8 @@ void menuLocataire() {
             case 3: reserverLogement();       break;
             case 4: voirMesReservations();    break;
             case 5: menuFavoris();            break;
-            case 6: menuPersonnalisation();   break;
+            case 6: menuNotation();           break;
+            case 7: menuPersonnalisation();   break;
             case 0: deconnecterUtilisateur(); break;
             default:
                 printf("[ERREUR] Le choix %d n'existe pas.\n", choix);

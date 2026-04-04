@@ -15,6 +15,7 @@
 #include "auth.h"
 #include "logement.h"
 #include "bailleur.h"
+#include "notification.h"
 
 /* -- Variables extern definies dans reservations (main.c) -- */
 extern Reservation listeReservations[MAX_RESERVATIONS];
