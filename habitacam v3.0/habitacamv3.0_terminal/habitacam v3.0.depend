@@ -1,0 +1,267 @@
+# depslib dependency file v1.0
+1774853723 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\administrateur.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"administrateur.h"
+
+1774853722 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\structures.h
+
+1774853723 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\auth.h
+	"structures.h"
+
+1774853723 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\administrateur.h
+	"structures.h"
+	"auth.h"
+
+1775301197 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\auth.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	<termios.h>
+	<unistd.h>
+	<sys/stat.h>
+	"structures.h"
+	"auth.h"
+
+1774853723 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\favoris.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"favoris.h"
+	<sys/stat.h>
+
+1774853722 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\logement.h
+	"structures.h"
+
+1774853723 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\favoris.h
+	"structures.h"
+
+1774853723 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\logement.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+
+1774853723 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\matching.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"matching.h"
+	<sys/stat.h>
+
+1774853723 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\matching.h
+	"structures.h"
+
+1775171212 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\bailleur.c
+	<stdio.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"bailleur.h"
+	"notification.h"
+
+1774853722 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\bailleur.h
+	"structures.h"
+
+1775171212 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\notification.h
+	"structures.h"
+
+1775171161 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\locataire.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+	"matching.h"
+	"favoris.h"
+	"notation.h"
+	"notification.h"
+
+1774853723 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\locataire.h
+	"structures.h"
+
+1775170904 c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\notation.h
+	"structures.h"
+
+1775171206 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\main.c
+	<stdio.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+	"bailleur.h"
+	"administrateur.h"
+	"matching.h"
+	"favoris.h"
+	"notation.h"
+	"notification.h"
+
+1775170855 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\notation.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"notation.h"
+	<sys/stat.h>
+
+1775171029 source:c:\users\lenovo\projet-habitacam-v2.0\projet-habitacam-v2.0\habitacam v2.0\notification.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"matching.h"
+	"notification.h"
+	<sys/stat.h>
+
+1774853723 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\administrateur.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"administrateur.h"
+
+1774853722 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\structures.h
+
+1774853723 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\auth.h
+	"structures.h"
+
+1774853723 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\administrateur.h
+	"structures.h"
+	"auth.h"
+
+1775301197 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\auth.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	<termios.h>
+	<unistd.h>
+	<sys/stat.h>
+	"structures.h"
+	"auth.h"
+
+1775171212 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\bailleur.c
+	<stdio.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"bailleur.h"
+	"notification.h"
+
+1774853722 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\logement.h
+	"structures.h"
+
+1774853722 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\bailleur.h
+	"structures.h"
+
+1775171212 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\notification.h
+	"structures.h"
+
+1774853723 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\favoris.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"favoris.h"
+	<sys/stat.h>
+
+1774853723 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\favoris.h
+	"structures.h"
+
+1775171161 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\locataire.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+	"matching.h"
+	"favoris.h"
+	"notation.h"
+	"notification.h"
+
+1774853723 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\locataire.h
+	"structures.h"
+
+1774853723 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\matching.h
+	"structures.h"
+
+1775170904 c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\notation.h
+	"structures.h"
+
+1774853723 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\logement.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+
+1775171206 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\main.c
+	<stdio.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"locataire.h"
+	"bailleur.h"
+	"administrateur.h"
+	"matching.h"
+	"favoris.h"
+	"notation.h"
+	"notification.h"
+
+1774853723 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\matching.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"matching.h"
+	<sys/stat.h>
+
+1775170855 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\notation.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"notation.h"
+	<sys/stat.h>
+
+1775171029 source:c:\users\lenovo\projet-habitacam-v3.0\projet-habitacam-v3.0\habitacam v3.0\habitacamv3.0_terminal\notification.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"structures.h"
+	"auth.h"
+	"logement.h"
+	"matching.h"
+	"notification.h"
+	<sys/stat.h>
+

@@ -1,0 +1,5 @@
+1|Studio Bastos|Studio|studio de pemiere classe|Yaounde|Bastos|30.0|4|45000|2|2
+2|Appart Melen|Appartement|appart chic|Yaounde|Melen|55.0|6|90000|2|2
+3|Villa Omnisports|Villa|villa spacieuse |Yaounde|Omnisports|90.0|7|130000|1|2
+4|Chambre Bonamoussadi|Chambre|chambre moderne|Douala|Bonamoussadi|18.0|2|25000|2|3
+5|Appart Akwa|Appartement|appart standard |Douala|Akwa|60.0|6|95000|1|3

@@ -1,0 +1,6 @@
+1|WAWO|Kevin|kevin@habitacam.cm|688255594|Yaounde237|3|0|1
+2|SIANI|Bruce|bruce@habitacam.cm|699958000|Yaounde2007|2|0|1
+3|TOGNANG |Jordan |jordan@habitacam.cm|677001122|Yaounde2007|2|0|1
+4|FOMEKONG|Josue|josue@habitacam.cm|688559400|Yaounde2007|1|0|1
+5|NANDA|Yepkep|yepkep@habitacam.cm|655443322|Yaounde2007|1|0|1
+6|NDOMBOU |Stone |stone@habitacam.cm|677889900|Yaounde2007|1|0|1

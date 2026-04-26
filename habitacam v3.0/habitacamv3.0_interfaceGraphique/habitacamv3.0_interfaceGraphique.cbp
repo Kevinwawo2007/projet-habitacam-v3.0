@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="habitacamv3.0_interfaceGraphique" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/habitacamv3" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/habitacamv3" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Linker>
+			<Add option="-lcomdlg32 -lgdi32 -luser32 -lcomctl32" />
+			<Add library="gdi32" />
+			<Add library="user32" />
+			<Add library="kernel32" />
+			<Add library="comctl32" />
+		</Linker>
+		<Unit filename="Bailleur.h" />
+		<Unit filename="Logement.h" />
+		<Unit filename="administrateur.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="administrateur.h" />
+		<Unit filename="auth.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="auth.h" />
+		<Unit filename="bailleur.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="favoris.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="favoris.h" />
+		<Unit filename="habitacamv3.0_interfaceGraphique.cbp" />
+		<Unit filename="locataire.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="locataire.h" />
+		<Unit filename="logement.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="main_win32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="matching.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="matching.h" />
+		<Unit filename="notation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="notation.h" />
+		<Unit filename="notification.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="notification.h" />
+		<Unit filename="structures.h" />
+		<Unit filename="win_auth.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="win_auth.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
